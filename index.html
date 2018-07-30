@@ -7,7 +7,13 @@
     <title>nhk_news</title>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="title"></div>
+        <div class="content"></div>
+        <div class="buttons">
+            <div class="play_all">play all</div>
+        </div>
+    </div>
     <script>
         if (!Element.prototype.matches)
                 Element.prototype.matches = Element.prototype.msMatchesSelector ||
@@ -25,7 +31,7 @@
                 };
     </script>
     <script>
-        let title = '<h1 class="article-main__title"> < ruby > 暑 < rt > あつ</rt></ruby > いドイツでビールが < ruby > 売 < rt > う</rt ></ruby > れて < ruby > 瓶 < rt > びん</rt ></ruby > が < ruby > 足 < rt > た</rt ></ruby > りなくなっている </h1 >';
+        let title = '<h1 class="article-main__title"> <ruby>暑<rt>あつ</rt></ruby>いドイツでビールが<ruby>売<rt>う</rt></ruby>れて<ruby>瓶<rt>びん</rt></ruby>が<ruby>足<rt>た</rt></ruby>りなくなっている </h1>';
         let input = '<div class="article-main__body article-body" id="js-article-body"> <p><span class="colorL">ドイツ</span>では<ruby>厳<rt>きび</rt></ruby>しい<ruby>暑<rt>あつ</rt></ruby>さが<ruby>続<rt>つづ</rt></ruby>いていて、<ruby>山<rt>やま</rt></ruby>が<ruby>火事<rt>かじ</rt></ruby>になったり、<ruby>雨<rt>あめ</rt></ruby>が<ruby>少<rt>すく</rt></ruby>なくて<a href="javascript:void(0)" class="dicWin" id="id-0003"><ruby><span class="under">畑</span><rt>はたけ</rt></ruby></a>に<ruby>水<rt>みず</rt></ruby>が<ruby>足<rt>た</rt></ruby>りなくなったりしています。<span class="colorL">ハノーバー</span>にある<ruby>空港<rt>くうこう</rt></ruby>では、<a href="javascript:void(0)" class="dicWin" id="id-0004"><ruby><span class="under">滑走路</span><rt>かっそうろ</rt></ruby></a>の<a href="javascript:void(0)" class="dicWin" id="id-0005"><ruby><span class="under">表面</span><rt>ひょうめん</rt></ruby></a>が<a href="javascript:void(0)" class="dicWin" id="id-0006"><span class="under">はがれ</span></a>て、しばらく<ruby>空港<rt>くうこう</rt></ruby>を<ruby>使<rt>つか</rt></ruby>うことができなくなりました。</p> <p><a href="javascript:void(0)" class="dicWin" id="id-0000"><span class="under">ビール</span></a>をよく<ruby>飲<rt>の</rt></ruby>む<span class="colorL">ドイツ</span>の<ruby>人<rt>ひと</rt></ruby>は、<ruby>今年<rt>ことし</rt></ruby>の<ruby>夏<rt>なつ</rt></ruby>はいつもよりたくさん<a href="javascript:void(0)" class="dicWin" id="id-0000"><span class="under">ビール</span></a>を<ruby>飲<rt>の</rt></ruby>んでいます。</p> <p><span class="colorL">ドイツ</span>では、<a href="javascript:void(0)" class="dicWin" id="id-0000"><span class="under">ビール</span></a>の<a href="javascript:void(0)" class="dicWin" id="id-0002"><ruby><span class="under">瓶</span><rt>びん</rt></ruby></a>や<a href="javascript:void(0)" class="dicWin" id="id-0007"><span class="under">ケース</span></a>を<a href="javascript:void(0)" class="dicWin" id="id-0008"><span class="under">リサイクル</span></a>していて、<a href="javascript:void(0)" class="dicWin" id="id-0000"><span class="under">ビール</span></a>を<ruby>飲<rt>の</rt></ruby>んだあと<a href="javascript:void(0)" class="dicWin" id="id-0002"><ruby><span class="under">瓶</span><rt>びん</rt></ruby></a>を<ruby>店<rt>みせ</rt></ruby>などに<a href="javascript:void(0)" class="dicWin" id="id-0009"><ruby><span class="under">戻</span><rt>もど</rt></ruby><span class="under">す</span></a>と、お<ruby>金<rt>かね</rt></ruby>が<a href="javascript:void(0)" class="dicWin" id="id-0010"><ruby><span class="under">返</span><rt>かえ</rt></ruby><span class="under">っ</span></a>てきます。しかし、<a href="javascript:void(0)" class="dicWin" id="id-0000"><span class="under">ビール</span></a>がどんどん<a href="javascript:void(0)" class="dicWin" id="id-0001"><ruby><span class="under">売</span><rt>う</rt></ruby><span class="under">れ</span></a>ているため、<a href="javascript:void(0)" class="dicWin" id="id-0002"><ruby><span class="under">瓶</span><rt>びん</rt></ruby></a>などが<ruby>足<rt>た</rt></ruby>りなくなっています。</p> <p><a href="javascript:void(0)" class="dicWin" id="id-0000"><span class="under">ビール</span></a>の<ruby>会社<rt>かいしゃ</rt></ruby>は、<ruby>飲<rt>の</rt></ruby>んだあとは<a href="javascript:void(0)" class="dicWin" id="id-0002"><ruby><span class="under">瓶</span><rt>びん</rt></ruby></a>や<a href="javascript:void(0)" class="dicWin" id="id-0007"><span class="under">ケース</span></a>を<ruby>早<rt>はや</rt></ruby>く<a href="javascript:void(0)" class="dicWin" id="id-0011"><ruby><span class="under">戻</span><rt>もど</rt></ruby><span class="under">し</span></a>てほしいと<ruby>言<rt>い</rt></ruby>っています。</p> <p></p> <p></p> </div>';
         const parser = function (input) {
             let output = [], curr_index = 0, sentences = [];
@@ -36,7 +42,11 @@
                     sentences.push(input.substring(0, curr_index + 1).trim())
                     input = input.substring(curr_index + 1)
                 } else {
-                    sentences[sentences.length - 1] += input;
+                    if(sentences.length){
+                        sentences[sentences.length - 1] += input;
+                    } else {
+                        sentences[sentences.length] = input;
+                    }
                 }
             }
 
@@ -82,7 +92,7 @@
             return output;
         }
 
-        const builder = function (sentences) {
+        const contentBuilder = function (sentences, selector) {
             let html = '', str, id = 0;
             sentences.forEach(sentence => {
                 str = ''
@@ -96,21 +106,71 @@
                 html += `<p class="sentences" id=${id++}>${str}</p>`;
             })
 
+            document.querySelector(selector).innerHTML = html;
+
             return html;
         }
-        let output = parser(input);
-        document.querySelector('#app').innerHTML = builder(output);
 
-        document.querySelector('#app').addEventListener('click', function(event){
+        let output = parser(input);
+        contentBuilder(output, '.content');
+
+        const titleBuilder = function(title){
+            let data = parser(title);
+            document.title = data[0].content;
+            document.querySelector('.title').innerHTML = data[0].content;
+        }
+
+        titleBuilder(title);
+
+        function buildVoice(){
+            let speechSU = new window.SpeechSynthesisUtterance(), currentText;
+
+            speechSU.lang = 'ja-JP';
+            speechSU.rate = 0.8;
+
+
+            return {
+                setText: function(text){
+                    speechSU.text = text
+                    currentText = text
+                },
+                play: function(text){
+                    speechSU.text = text || currentText;
+                    window.speechSynthesis.speak(speechSU);
+                },
+                onend: function(cb){
+                    speechSU.onend = cb;
+                }
+            }
+        }
+        const voice = buildVoice();
+
+        document.querySelector('.content').addEventListener('click', function(event){
             let target = event.target.closest('.sentences');
             if(target){
-                var speechSU = new window.SpeechSynthesisUtterance(output[target.id].content);
-                speechSU.lang = 'ja-JP';
-                speechSU.rate = 0.8;
-                window.speechSynthesis.speak(speechSU);
+                voice.play(output[target.id].content);
             }
         })
 
+
+        let playIndex = 0;
+        document.querySelector('.play_all').addEventListener('click', function (event) {
+            playIndex = 0;
+            playAll()
+        })
+
+        function playAll(){
+            voice.play(output[playIndex].content);
+            voice.onend(function () {
+                if (playIndex < output.length - 1) {
+                    setTimeout(() => {
+                        playAll()
+                    }, 500);
+                }
+                playIndex++
+            })
+
+        }
     </script>
 </body>
 </html>

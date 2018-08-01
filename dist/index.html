@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nhk_news</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="text/x-template" id="template">
+        <div>
+            <div class="title" @click="toggle(-1)">{{title[0].content}}</div>
+            <div class="content">
+                <p v-for="(item, index) in content" :key="index" @click="toggle(index)">{{item.content}}</p>
+            </div>
+        </div>
+    </script>
+    <script src="./bundle.js"></script>
+</body>
+</html>

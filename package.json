@@ -1,0 +1,32 @@
+{
+  "name": "nhk_news",
+  "version": "0.1.0",
+  "description": "nhk_news",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yiyizym/nhk_news_easy.git"
+  },
+  "keywords": [
+    "nhk",
+    "news",
+    "easy"
+  ],
+  "author": "jude",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yiyizym/nhk_news_easy/issues"
+  },
+  "homepage": "https://github.com/yiyizym/nhk_news_easy#readme",
+  "devDependencies": {
+    "webpack": "^4.16.3",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "vue": "^2.5.16"
+  }
+}

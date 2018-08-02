@@ -9,6 +9,7 @@ const vue = new Vue({
     data: {
         title: parser(data.title),
         content: parser(data.content),
+        playIndex: 0,
     },
     methods: {
         toggle(index) {
@@ -24,47 +25,21 @@ const vue = new Vue({
                 }
             } else {
                 console.log('speak');
-                speaker.speak(index === -1 ? this.title[0].content : this.content[index][content]);
+                speaker.speak(index === -1 ? this.title[0].content : this.content[index].content);
             }
+        },
+        speakAll(){
+            console.log('speak all');
+
+            speaker.speak(this.content[this.playIndex].content);
+            speaker.onend(function () {
+                if (this.playIndex < this.content.length - 1) {
+                    setTimeout(() => {
+                        this.speakAll()
+                    }, 500);
+                }
+                this.playIndex++
+            })
         }
     }
 });
-
-// let output = parser(input);
-// contentBuilder(output, '.content');
-
-// // const titleBuilder = function(title){
-// //     let data = parser(title);
-// //     document.title = data[0].content;
-// //     document.querySelector('.title').innerHTML = data[0].content;
-// // }
-
-// // titleBuilder(title);
-
-// document.querySelector('.content').addEventListener('click', function (event) {
-//     let target = event.target.closest('.sentences');
-//     if (target) {
-//         voice.play(output[target.id].content);
-//         target.classList.add('speaking');
-//     }
-// })
-
-
-// let playIndex = 0;
-// document.querySelector('.play_all').addEventListener('click', function (event) {
-//     playIndex = 0;
-//     playAll()
-// })
-
-// function playAll() {
-//     voice.play(output[playIndex].content);
-//     voice.onend(function () {
-//         if (playIndex < output.length - 1) {
-//             setTimeout(() => {
-//                 playAll()
-//             }, 500);
-//         }
-//         playIndex++
-//     })
-
-// }

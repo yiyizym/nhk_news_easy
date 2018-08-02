@@ -14,6 +14,9 @@
             <div class="content">
                 <p v-for="(item, index) in content" :key="index" @click="toggle(index)">{{item.content}}</p>
             </div>
+            <div class="btns">
+                <div class="all" @click="speakAll">speak all</div>
+            </div>
         </div>
     </script>
     <script src="./bundle.js"></script>

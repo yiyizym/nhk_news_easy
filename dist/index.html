@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>nhk_news</title>
+    <style>
+        .active {
+            color: rgb(255, 217, 0);
+        }
+    </style>
 </head>
 <body>
     <div id="app"></div>
@@ -12,7 +17,7 @@
         <div>
             <div class="title" @click="toggle(-1)">{{title[0].content}}</div>
             <div class="content">
-                <p v-for="(item, index) in content" :key="index" @click="toggle(index)">{{item.content}}</p>
+                <p v-for="(item, index) in content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="toggle(index)">{{item.content}}</p>
             </div>
             <div class="btns">
                 <div class="all" @click="speakAll">speak all</div>

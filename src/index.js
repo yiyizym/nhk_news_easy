@@ -29,6 +29,9 @@ const vue = new Vue({
                 speaker.speak(index === -1 ? this.title[0].content : this.content[index].content);
             }
         },
+        isSpeaking(index) {
+            return index === this.playIndex;
+        },
         speakAll(){
             let self = this;
             console.log('speak all');

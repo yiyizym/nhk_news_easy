@@ -20,9 +20,10 @@
                 <p v-for="(item, index) in content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="toggle(index)">{{item.content}}</p>
             </div>
             <div class="btns">
-                <div class="all" @click="speakAll">speak all</div>
+                <div class="all" @click="speak()">speak</div>
                 <div class="all" @click="pauseSentence">pause sentence</div>
                 <div class="all" @click="continueSentence">continue sentence</div>
+                <div @click="toggleSuccessive">{{isSuccessive ? '连续' : '单句'}}</div>
             </div>
         </div>
     </script>

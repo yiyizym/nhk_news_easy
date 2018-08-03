@@ -10,29 +10,33 @@ const vue = new Vue({
         title: parser(data.title),
         content: parser(data.content),
         playIndex: 0,
+        isSuccessive: false,
         paused: false
     },
     methods: {
         toggle(index) {
-            if (speaker.isSpeaking()){
-                console.log('speaking');
-
-                if(speaker.isPaused()){
-                    console.log('resume');
-                    speaker.resume();
-                } else {
-                    console.log('pause');
-                    speaker.pause();
-                }
-            } else {
-                console.log('speak');
-                speaker.speak(index === -1 ? this.title[0].content : this.content[index].content);
+            if (!this.paused){
+                this.pauseSentence();
             }
+            this.speak(index);
+        },
+        toggleSuccessive(){
+            this.isSuccessive = !this.isSuccessive;
         },
         isSpeaking(index) {
             return index === this.playIndex;
         },
-        speakAll(){
+        speak(index){
+            index |= this.playIndex;
+            this.paused = false;
+            this.playIndex = index;
+            if(this.isSuccessive){
+                this.speakSuccessive();
+            } else {
+                speaker.speak(index === -1 ? this.title[0].content : this.content[index].content);
+            }
+        },
+        speakSuccessive(){
             let self = this;
             console.log('speak all');
 
@@ -44,7 +48,7 @@ const vue = new Vue({
                 }
                 if (self.playIndex < self.content.length - 1) {
                     setTimeout(() => {
-                        self.speakAll()
+                        self.speakSuccessive()
                     }, 500);
                     self.playIndex++
                 } else {

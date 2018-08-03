@@ -11,10 +11,21 @@ const vue = new Vue({
         content: parser(data.content),
         playIndex: 0,
         isSuccessive: false,
-        paused: false
+        paused: true
     },
     methods: {
-        toggle(index) {
+        buildSentence(item) {
+            let str = '';
+            item.words.forEach(word => {
+                if (word.furigana) {
+                    str += `<ruby>${word.moji}<rt>${word.furigana}</rt></ruby>`
+                } else {
+                    str += `<span>${word.moji}</span>`
+                }
+            })
+            return str;
+        },
+        play(index) {
             if (!this.paused){
                 this.pauseSentence();
             }

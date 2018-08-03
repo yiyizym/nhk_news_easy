@@ -3,7 +3,7 @@ function buildSpeaker() {
     let synth = window.speechSynthesis;
 
     speechSU.lang = 'ja-JP';
-    speechSU.rate = 0.8;
+    speechSU.rate = 0.75;
 
 
     return {

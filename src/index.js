@@ -10,6 +10,7 @@ const vue = new Vue({
         title: parser(data.title),
         content: parser(data.content),
         playIndex: 0,
+        paused: false
     },
     methods: {
         toggle(index) {
@@ -29,17 +30,33 @@ const vue = new Vue({
             }
         },
         speakAll(){
+            let self = this;
             console.log('speak all');
 
             speaker.speak(this.content[this.playIndex].content);
             speaker.onend(function () {
-                if (this.playIndex < this.content.length - 1) {
-                    setTimeout(() => {
-                        this.speakAll()
-                    }, 500);
+                if(self.paused){
+                    // noop
+                    return;
                 }
-                this.playIndex++
+                if (self.playIndex < self.content.length - 1) {
+                    setTimeout(() => {
+                        self.speakAll()
+                    }, 500);
+                    self.playIndex++
+                } else {
+                    self.playIndex = 0
+                    self.paused = false
+                }
             })
+        },
+        pauseSentence(){
+            this.paused = true
+            speaker.cancel();
+        },
+        continueSentence(){
+            this.paused = false
+            this.speakAll();
         }
     }
 });

@@ -27,9 +27,15 @@ function buildSpeaker() {
         resume: function () {
             synth.resume()
         },
-        pause: function(){
+        pause: function(){// does not work
             synth.pause();
-        }
+        },
+        cancel: function(){
+            synth.cancel();
+        },
+        // continue: function(){
+
+        // }
     }
 }
 export default buildSpeaker();

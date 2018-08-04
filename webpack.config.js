@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     mode: process.env.WEBPACK_MODE || 'development',
@@ -15,5 +16,11 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'docs'),
         filename: '[contenthash].bundle.js'
-    }
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'nhk_news_easy',
+        template: 'src/index.html'
+      })
+    ]
 };

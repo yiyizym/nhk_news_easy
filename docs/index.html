@@ -4,10 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nhk_news</title>
+    <title>nhk_news_easy</title>
     <style>
-        .active {
-            color: rgb(255, 217, 0);
+        .content > p {
+          color: aliceblue;
+        }
+        .content > p:hover {
+          background: rgb(224, 224, 222);
+        }
+        .content > .active {
+            color: rgb(21, 20, 17);
+        }
+        .content > p,
+        .btns > button {
+          cursor: pointer;
         }
     </style>
 </head>
@@ -20,10 +30,10 @@
                 <p v-for="(item, index) in content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="play(index)" v-html="buildSentence(item)"></p>
             </div>
             <div class="btns">
-                <div class="all" @click="speak()">speak</div>
-                <div class="all" @click="pauseSentence">pause sentence</div>
-                <div class="all" @click="continueSentence">continue sentence</div>
-                <div @click="toggleSuccessive">{{isSuccessive ? '连续' : '单句'}}</div>
+                <button class="all" @click="speak()">speak</button>
+                <button class="all" @click="pauseSentence">pause</button>
+                <button class="all" @click="continueSentence">continue</button>
+                <button @click="toggleSuccessive">{{isSuccessive ? 'successive' : 'single'}}</button>
             </div>
         </div>
     </script>

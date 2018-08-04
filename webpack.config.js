@@ -1,15 +1,19 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: process.env.WEBPACK_MODE || 'development',
+    // mode: 'development',
     entry: './src/index.js',
     resolve: {
         alias: {
             vue: 'vue/dist/vue.js'
         }
     },
+    serve: {
+      content: './docs'
+    },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         filename: 'bundle.js'
     }
 };

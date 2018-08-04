@@ -49,7 +49,7 @@ const vue = new Vue({
         },
         speakSuccessive(){
             let self = this;
-            console.log('speak all');
+            console.log('speak all sentences !');
 
             speaker.speak(this.content[this.playIndex].content);
             speaker.onend(function () {

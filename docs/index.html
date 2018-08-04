@@ -1,42 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nhk_news_easy</title>
-    <style>
-        .content > p {
-          color: aliceblue;
-        }
-        .content > p:hover {
-          background: rgb(224, 224, 222);
-        }
-        .content > .active {
-            color: rgb(21, 20, 17);
-        }
-        .content > p,
-        .btns > button {
-          cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@judes.me" />
+  <meta name="twitter:creator" content="@yiyizym" />
+  <meta name="twitter:title" content="nhk news web easy" />
+  <meta name="twitter:description" content="Reading 'nhk news web easy' with machine pronunciation, unofficial. Official site: https://www3.nhk.or.jp/news/easy/"
+  />
+  <title>nhk_news_easy</title>
+  <style>
+    .content>p {
+      color: aliceblue;
+    }
+
+    .content>p:hover {
+      background: rgb(224, 224, 222);
+    }
+
+    .content>.active {
+      color: rgb(21, 20, 17);
+    }
+
+    .list > .title,
+    .content>p,
+    .btns>button {
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
-    <div id="app"></div>
-    <script type="text/x-template" id="template">
-        <div>
-            <div class="title" @click="play(-1)">{{title[0].content}}</div>
-            <div class="content">
-                <p v-for="(item, index) in content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="play(index)" v-html="buildSentence(item)"></p>
-            </div>
-            <div class="btns">
-                <button class="all" @click="speak()">speak</button>
-                <button class="all" @click="pauseSentence">pause</button>
-                <button class="all" @click="continueSentence">continue</button>
-                <button @click="toggleSuccessive">{{isSuccessive ? 'successive' : 'single'}}</button>
-            </div>
-        </div>
+  <div id="app"></div>
+  <script type="text/x-template" id="template">
+    <div class="list" v-if="mode == 'list'">
+      <div class="title" title="click to listen this post" v-for="(post, index) in posts" @click="showPost(index)">{{post.title.text}}</div>
+    </div>
+    <div class="post" v-else>
+      <div class="title">
+        <button @click="backToList">back to posts' list</button>
+        <p title="post's title">{{currentPost.title.text}}</p>
+      </div>
+      <div class="content">
+        <p title="click to listen this sentence" v-for="(sentence, index) in currentPost.content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="play(index)" v-html="buildSentence(sentence)"></p>
+      </div>
+      <div class="btns">
+        <button class="all" @click="speak">speak</button>
+        <button class="all" @click="pauseSentence">pause</button>
+        <button class="all" @click="continueSentence">continue</button>
+        <button @click="toggleSuccessive">mode: {{isSuccessive ? 'successive' : 'single'}}</button>
+        
+      </div>
+    </div>
     </script>
-    <script src="./bundle.js"></script>
+  <script src="./bundle.js"></script>
 </body>
+
 </html>

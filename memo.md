@@ -41,7 +41,7 @@
 ```JSON
 [
     {
-        "content": "完整的句子",
+        "text": "完整的句子",
         "words": [
             {
                 "moji": "",

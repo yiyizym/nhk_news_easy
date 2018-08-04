@@ -7,7 +7,7 @@ module.exports = {
     entry: './src/index.js',
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.min.js'
         }
     },
     serve: {

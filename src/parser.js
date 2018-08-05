@@ -1,90 +1,133 @@
+const htmlparser = require("htmlparser");
 /**
  * 
  * @param {array} input 
  * @returns {array} [
  *  {
- *    title: {text: '', words: [{moji: '', furigana: ''}]},
+ *    title: {text: '', dom: dom},
  *    content: [
  *      {
  *        text: '', 
- *        words: [
- *          {moji: '', furigana: ''}
- *        ]
+ *        dom: dom
  *      }
  *    ]
  *  }
  * ]
  */
-const parser = function (posts) {
+const parse = function (posts) {
   return posts.map(post => {
     return {
-      title: handleTitle(post.title),
-      content: handleContent(post.content),
+      title: parseTitle(post.title),
+      content: parseContent(post.content),
     }
   })
 }
 
-const handleContent = function(input){
-  let curr_index = 0, sentences = [];
+const handler = new htmlparser.DefaultHandler(function(){});
+const parser = new htmlparser.Parser(handler);
 
-  while (curr_index != -1) {
-    curr_index = input.indexOf('。')
-    if (curr_index != -1) {
-      sentences.push(input.substring(0, curr_index + 1).trim())
-      input = input.substring(curr_index + 1)
-    } else {
-      if (sentences.length) {
-        sentences[sentences.length - 1] += input;
-      } else {
-        sentences[sentences.length] = input;
-      }
+const parseTitle = function(input){
+  parser.parseComplete(input);
+  let text = '', trimed;
+  handler.dom[0].children.slice(0).forEach(tag => {
+    switch (tag.type) {
+      case 'text':
+        trimed = tag.data.trim()
+        if(trimed != ''){
+          text += trimed
+        }
+        break;
+      case 'tag':
+        if(tag.name == 'ruby'){
+          text += handleRubyTag(tag)
+        }
+        break;
+      default:
+        break;
     }
-  }
+  });
+  handler.dom[0].text = text;
+  return handler.dom[0];
+}
 
-  return sentences.map((sentence) => {
-    return constructSentence(sentence);
+const handleRubyTag = function(obj){
+  let result = '', trimed;
+  obj.children.slice(0).forEach(tag => {
+    switch (tag.type) {
+      case 'text':
+        trimed = tag.data.trim()
+        if (trimed != '') {
+          result += trimed
+        }
+        break;
+      case 'tag':
+        if (tag.name == 'rt'){
+          // result += tag.children[0].data.trim();
+        } else {
+          result += handleNormalTag(tag)
+        }
+        break;
+    }
   })
-
-}
-
-const handleTitle = function(input){
-  
-  return constructSentence(input);
-  
-}
-
-const constructSentence = function (rawSen) {
-  let result = {}
-  result.text = rawSen.replace(/<rt>[^<]*?<\/rt>|\s/g, '').replace(/<[^>]*?>/g, '');
-  result.words = constructWords(rawSen);
-
   return result;
 }
 
-const constructWords = function (rawSen) {
-  let words = []
 
-  rawSen = rawSen.replace(/(<\/[^>]*?>|^)([^<\/>]+?)(<[^>]*?>|$)/g, function (match, p1, p2, p3) {
-    return `${p1}<span>${p2}</span>${p3}`;
+const parseContent = function (input) {
+  parser.parseComplete(input);
+  let content = [], text;
+
+  handler.dom[0].children.slice(0).forEach(tag => {
+    switch (tag.type) {
+      case 'text':
+        // 这种情况只有空白节点
+        break;
+      case 'tag':
+        if (tag.data == 'p') {
+          text = handlePTag(tag)
+          if (text) {
+            content.push({
+              text: text,
+              dom: tag
+            })
+          }
+        }
+      default:
+        break;
+    }
   })
 
-  rawSen.replace(/<span[^>]*?>(.*?)<\/span>|<ruby>(.*?)<rt>(.*?)<\/rt><\/ruby>/g, function (match, p1, p2, p3) {
-    if (match.indexOf('<span') === 0) {
-      words.push({
-        "moji": p1.replace(/<[^>]*?>|\s/g, ''),
-        "furigana": ""
-      })
-    } else {
-      words.push({
-        "moji": p2.replace(/<[^>]*?>|\s/g, ''),
-        "furigana": p3.replace(/<[^>]*?>|\s/g, '')
-      })
-    }
-    return '';
-  });
-
-  return words;
-
+  return content;
 }
 
-export default parser;
+const handleNormalTag = function (obj) {
+  let result = '', trimed;
+  obj.children && obj.children.slice(0).forEach(tag => {
+    switch (tag.type) {
+      case 'text':
+        trimed = tag.data.trim()
+        if (trimed != '') {
+          result += trimed
+        }
+        break;
+      case 'tag':
+        if (tag.name == 'ruby') {
+          result += handleRubyTag(tag);
+        } else if (tag.name == 'a') {
+          result += handleATag(tag);
+        } else if (tag.name == 'span') {
+          result += handleSpanTag(tag);
+        }
+        break;
+    }
+  })
+  return result;
+}
+
+const handlePTag = handleNormalTag, handleATag = handleNormalTag, handleSpanTag = handleNormalTag;
+
+module.exports = {
+  parse,
+  parseTitle,
+  parseContent
+};

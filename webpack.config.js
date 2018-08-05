@@ -15,7 +15,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'docs'),
-        filename: '[contenthash].bundle.js'
+        filename: '[hash].bundle.js'
     },
     plugins: [
       new HtmlWebpackPlugin({

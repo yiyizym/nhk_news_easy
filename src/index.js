@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import posts from './posts'
-import parser from './parser'
+import { parse } from './parser'
+import { build } from './builder'
 import speaker from './speaker'
 
 const vue = new Vue({
   el: '#app',
   template: '#template',
   data: {
-    posts: parser(posts),
+    posts: parse(posts),
     currentPost: null,
     playIndex: 0,
     isSuccessive: false,
@@ -17,6 +18,8 @@ const vue = new Vue({
   methods: {
     showPost(index) {
       this.currentPost = this.posts[index];
+      console.log('currentPost: ', this.currentPost);
+      
       this.mode = 'post';
     },
     backToList(){
@@ -25,15 +28,7 @@ const vue = new Vue({
       this.mode = 'list';
     },
     buildSentence(sentence) {
-      let str = '';
-      sentence.words.forEach(word => {
-        if (word.furigana) {
-          str += `<ruby>${word.moji}<rt>${word.furigana}</rt></ruby>`
-        } else {
-          str += `<span>${word.moji}</span>`
-        }
-      })
-      return str;
+      return build(sentence);
     },
     play(index) {
       if (!this.paused) {

@@ -47,7 +47,7 @@
         <p title="click to listen this sentence" v-for="(sentence, index) in currentPost.content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="play(index)" v-html="buildSentence(sentence)"></p>
       </div>
       <div class="btns">
-        <button class="all" @click="speak">speak</button>
+        <button class="all" @click="speak()">speak</button>
         <button class="all" @click="pauseSentence">pause</button>
         <button class="all" @click="continueSentence">continue</button>
         <button @click="toggleSuccessive">mode: {{isSuccessive ? 'successive' : 'single'}}</button>

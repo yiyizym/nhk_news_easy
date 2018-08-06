@@ -1,0 +1,15 @@
+.content>p {
+    color: aliceblue;
+    &:hover {
+        background: rgb(224, 224, 222);
+    }
+    &.active {
+        color: rgb(21, 20, 17);
+    }
+}
+
+.list > .title,
+.content>p,
+.btns>button {
+    cursor: pointer;
+}

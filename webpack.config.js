@@ -4,11 +4,21 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     mode: process.env.WEBPACK_MODE || 'development',
     // mode: 'development',
-    entry: './src/index.js',
+    entry: './src/js/index.js',
     resolve: {
         alias: {
             vue: 'vue/dist/vue.min.js'
         }
+    },
+    module: {
+        rules: [{
+            test: /\.scss$/,
+            use: [
+                "style-loader", // creates style nodes from JS strings
+                "css-loader", // translates CSS into CommonJS
+                "sass-loader" // compiles Sass to CSS, using Node Sass by default
+            ]
+        }]
     },
     serve: {
       content: './docs'
@@ -20,7 +30,7 @@ module.exports = {
     plugins: [
       new HtmlWebpackPlugin({
         title: 'nhk_news_easy',
-        template: 'src/index.html'
+        template: 'src/tpl/index.html'
       })
     ]
 };

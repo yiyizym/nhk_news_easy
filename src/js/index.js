@@ -4,6 +4,8 @@ import { parse } from './parser'
 import { build } from './builder'
 import speaker from './speaker'
 
+import '../scss/index.scss'
+
 const vue = new Vue({
   el: '#app',
   template: '#template',
@@ -19,7 +21,7 @@ const vue = new Vue({
     showPost(index) {
       this.currentPost = this.posts[index];
       console.log('currentPost: ', this.currentPost);
-      
+
       this.mode = 'post';
     },
     backToList(){

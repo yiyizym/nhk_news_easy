@@ -1,133 +1,153 @@
 const htmlparser = require("htmlparser");
 /**
- * 
- * @param {array} input 
+ *
+ * @param {array} input
  * @returns {array} [
  *  {
  *    title: {text: '', dom: dom},
- *    content: [
- *      {
- *        text: '', 
- *        dom: dom
+ *    article: [
+ *      {// 一句一句
+ *          text: '',
+ *          dom: dom
  *      }
  *    ]
  *  }
  * ]
  */
 const parse = function (posts) {
-  return posts.map(post => {
-    return {
-      title: parseTitle(post.title),
-      content: parseContent(post.content),
-    }
-  })
+    return posts.map(post => {
+        return {
+            title: parseTitle(post.title),
+            article: parseArticle(post.article),
+        }
+    })
 }
 
-const handler = new htmlparser.DefaultHandler(function(){});
+const handler = new htmlparser.DefaultHandler(function () { });
 const parser = new htmlparser.Parser(handler);
 
-const parseTitle = function(input){
-  parser.parseComplete(input);
-  let text = '', trimed;
-  handler.dom[0].children.slice(0).forEach(tag => {
-    switch (tag.type) {
-      case 'text':
-        trimed = tag.data.trim()
-        if(trimed != ''){
-          text += trimed
+const parseTitle = function (input) {
+    parser.parseComplete(input);
+    let text = '', trimed;
+    handler.dom[0].children.slice(0).forEach(tag => {
+        switch (tag.type) {
+            case 'text':
+                trimed = tag.data.trim()
+                if (trimed != '') {
+                    text += trimed
+                }
+                break;
+            case 'tag':
+                if (tag.name == 'ruby') {
+                    text += handleRubyTag(tag)
+                }
+                break;
+            default:
+                break;
         }
-        break;
-      case 'tag':
-        if(tag.name == 'ruby'){
-          text += handleRubyTag(tag)
-        }
-        break;
-      default:
-        break;
-    }
-  });
-  handler.dom[0].text = text;
-  return handler.dom[0];
+    });
+    handler.dom[0].text = text;
+    return handler.dom[0];
 }
 
-const handleRubyTag = function(obj){
-  let result = '', trimed;
-  obj.children.slice(0).forEach(tag => {
-    switch (tag.type) {
-      case 'text':
-        trimed = tag.data.trim()
-        if (trimed != '') {
-          result += trimed
+const handleRubyTag = function (obj) {
+    let result = '', trimed;
+    obj.children.slice(0).forEach(tag => {
+        switch (tag.type) {
+            case 'text':
+                trimed = tag.data.trim()
+                if (trimed != '') {
+                    result += trimed
+                }
+                break;
+            case 'tag':
+                if (tag.name == 'rt') {
+                    // result += tag.children[0].data.trim();
+                } else {
+                    result += handleNormalTag(tag)
+                }
+                break;
         }
-        break;
-      case 'tag':
-        if (tag.name == 'rt'){
-          // result += tag.children[0].data.trim();
-        } else {
-          result += handleNormalTag(tag)
-        }
-        break;
-    }
-  })
-  return result;
+    })
+    return result;
 }
 
 
-const parseContent = function (input) {
-  parser.parseComplete(input);
-  let content = [], text;
+const parseArticle = function (input) {
+    let sentences = getSentences(input)
+    let article = [], text;
 
-  handler.dom[0].children.slice(0).forEach(tag => {
-    switch (tag.type) {
-      case 'text':
-        // 这种情况只有空白节点
-        break;
-      case 'tag':
-        if (tag.data == 'p') {
-          text = handlePTag(tag)
-          if (text) {
-            content.push({
-              text: text,
-              dom: tag
+    sentences.map(function(sentence){
+        text = '';
+        parser.parseComplete(sentence);
+        handler.dom[0].children.slice(0).forEach(tag => {
+            switch (tag.type) {
+                case 'text':
+                    if (tag.data.trim()){
+                        text += tag.data.trim()
+                    }
+                    break;
+                case 'tag':
+                    if (tag.name == 'rt') {
+                        //do nothing
+                    } else {
+                        text += handleNormalTag(tag);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        })
+        if(text){
+            article.push({
+                text: text,
+                dom: handler.dom[0]
             })
-          }
         }
-      default:
-        break;
-    }
-  })
+    })
 
-  return content;
+    return article;
+}
+
+const getSentences = function (str) {
+    let index = 0, result = [], temp = str;
+
+    while (temp) {
+        index = temp.indexOf('。') === -1 ? temp.length - 1 : temp.indexOf('。');
+        result.push('<div>' + temp.substring(0, index + 1) + '</div>')
+        temp = temp.slice(index + 1)
+    }
+
+    return result;
 }
 
 const handleNormalTag = function (obj) {
-  let result = '', trimed;
-  obj.children && obj.children.slice(0).forEach(tag => {
-    switch (tag.type) {
-      case 'text':
-        trimed = tag.data.trim()
-        if (trimed != '') {
-          result += trimed
+    let result = '', trimed;
+    obj.children && obj.children.slice(0).forEach(tag => {
+        switch (tag.type) {
+            case 'text':
+                trimed = tag.data.trim()
+                if (trimed != '') {
+                    result += trimed
+                }
+                break;
+            case 'tag':
+                if (tag.name == 'ruby') {
+                    result += handleRubyTag(tag);
+                } else if(tag.name == 'rt'){
+                    // do nothing
+                } else {
+                    result += handleNormalTag(tag);
+                }
+                break;
+            default:
         }
-        break;
-      case 'tag':
-        if (tag.name == 'ruby') {
-          result += handleRubyTag(tag);
-        } else if (tag.name == 'a') {
-          result += handleATag(tag);
-        } else if (tag.name == 'span') {
-          result += handleSpanTag(tag);
-        }
-        break;
-    }
-  })
-  return result;
+    })
+    return result;
 }
 
-const handlePTag = handleNormalTag, handleATag = handleNormalTag, handleSpanTag = handleNormalTag;
-
 module.exports = {
-  parse,
-  parseTitle,
-  parseContent
+    parse,
+    parseTitle,
+    parseArticle
 };

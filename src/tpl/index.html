@@ -25,7 +25,7 @@
         <p title="post's title">{{currentPost.title.text}}</p>
       </div>
       <div class="content">
-        <p title="click to listen this sentence" v-for="(sentence, index) in currentPost.content" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="play(index)" v-html="buildSentence(sentence)"></p>
+          <p title="click to listen this sentence" v-for="(sentence, index) in currentPost.article" :key="index" :class="[isSpeaking(index) ? 'active' : '']" @click="play(index)" v-html="buildSentence(sentence)"></p>
       </div>
       <div class="btns">
         <button class="all" @click="speak()">speak</button>

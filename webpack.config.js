@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
     mode: process.env.WEBPACK_MODE || 'development',
@@ -21,6 +22,7 @@ module.exports = {
       new HtmlWebpackPlugin({
         title: 'nhk_news_easy',
         template: 'src/index.html'
-      })
+      }),
+      new CleanWebpackPlugin(['docs'])
     ]
 };

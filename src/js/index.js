@@ -4,6 +4,8 @@ import { parse } from './parser'
 import { build } from './builder'
 import speaker from './speaker'
 
+import '../scss/index.scss'
+
 const vue = new Vue({
   el: '#app',
   template: '#template',
@@ -19,7 +21,7 @@ const vue = new Vue({
     showPost(index) {
       this.currentPost = this.posts[index];
       console.log('currentPost: ', this.currentPost);
-      
+
       this.mode = 'post';
     },
     backToList(){
@@ -46,23 +48,23 @@ const vue = new Vue({
       index = index || this.playIndex;
       this.paused = false;
       this.playIndex = index;
-      let content = this.currentPost.content;
+      let article = this.currentPost.article;
       if (this.isSuccessive) {
         this.speakSuccessive();
       } else {
-        speaker.speak(content[index].text);
+        speaker.speak(article[index].text);
       }
     },
     speakSuccessive() {
-      let self = this, content = this.currentPost.content;;
+      let self = this, article = this.currentPost.article;;
 
-      speaker.speak(content[this.playIndex].text);
+      speaker.speak(article[this.playIndex].text);
       speaker.onend(function () {
         if (self.paused) {
           // noop
           return;
         }
-        if (self.playIndex < content.length - 1) {
+        if (self.playIndex < article.length - 1) {
           setTimeout(() => {
             self.speakSuccessive()
           }, 500);

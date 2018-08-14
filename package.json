@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-serve ./webpack.config.js --open",
+    "dev": "webpack-dev-server --open",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -32,7 +32,7 @@
     "style-loader": "^0.21.0",
     "webpack": "^4.16.4",
     "webpack-cli": "^3.1.0",
-    "webpack-serve": "^2.0.2"
+    "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
     "htmlparser": "^1.7.7",

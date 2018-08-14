@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
     mode: process.env.WEBPACK_MODE || 'development',
@@ -12,6 +13,10 @@ module.exports = {
             vue: 'vue/dist/vue.js'
         }
     },
+    devServer: {
+      contentBase: './docs',
+      hot: true
+    },
     module: {
         rules: [{
             test: /\.scss$/,
@@ -22,9 +27,6 @@ module.exports = {
             ]
         }]
     },
-    serve: {
-      content: './docs'
-    },
     output: {
         path: path.resolve(__dirname, 'docs'),
         filename: '[hash].bundle.js'
@@ -34,6 +36,7 @@ module.exports = {
         title: 'nhk_news_easy',
         template: 'src/tpl/index.html'
       }),
-      new CleanWebpackPlugin(['docs'])
+      new CleanWebpackPlugin(['docs']),
+      new webpack.HotModuleReplacementPlugin()
     ]
 };

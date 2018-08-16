@@ -7,6 +7,9 @@ const build = function(obj){
           case 'ruby':
             htmlStr += handleRubyTag(tag);
             break;
+          case 'img':
+            //do nothing
+            break;
           default:
             htmlStr += `<span>${tag.children.slice(0).map(handleTag).join('')}</span>`;
             break;
@@ -28,6 +31,9 @@ const handleTag = function(tag) {
       switch (tag.name) {
         case 'ruby':
           return handleRubyTag(tag);
+        case 'img':
+            //do nothing
+            break;
         default:
           return `<span>${tag.children.slice(0).map(handleTag).join('')}</span>`;
       }

@@ -27,6 +27,8 @@ const vue = new Vue({
         backToList() {
             this.pauseSentence();
             this.currentPost = null;
+            this.playIndex = -1;
+            this.paused = true;
             this.mode = 'list';
         },
         buildSentence(sentence) {

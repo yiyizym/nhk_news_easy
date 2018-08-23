@@ -4,6 +4,9 @@ import codecs
 class DataOutput(object):
     def __init__(self):
         self.datas=[]
+        # 拿到 totalNumber 
+        # 取决是在尾部追加，还是新开一个文件
+        # 最后再 update totalNumber
     def store_data(self,data):
         if data is None:
             return

@@ -36,7 +36,7 @@ module.exports = {
         title: 'nhk_news_easy',
         template: 'src/tpl/index.html'
       }),
-      new CleanWebpackPlugin(['docs']),
+      new CleanWebpackPlugin(['docs'],{exclude:['data']}),
       new webpack.HotModuleReplacementPlugin()
     ]
 };

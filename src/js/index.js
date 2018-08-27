@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import posts from './posts'
+import { _axios } from './_axios';
 import { parse } from './parser'
 import { build } from './builder'
 import speaker from './speaker'
@@ -10,14 +10,23 @@ const vue = new Vue({
     el: '#app',
     template: '#template',
     data: {
-        posts: parse(posts),
+        // posts: parse(posts),
+        posts: [],
         currentPost: null,
         playIndex: -1,
         isSuccessive: false,
         paused: true,
         mode: 'list'
     },
+    mounted() {
+        this.getPosts(1);
+    },
     methods: {
+        getPosts(page) {
+            _axios
+            .get(`/data/${page}.json`)
+            .then(resp => this.posts = parse(resp));
+        },
         showPost(index) {
             this.currentPost = this.posts[index];
             console.log('currentPost: ', this.currentPost);

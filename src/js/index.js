@@ -10,7 +10,8 @@ const vue = new Vue({
     el: '#app',
     template: '#template',
     data: {
-        // posts: parse(posts),
+        initPageNumber: null,
+        currentPageNumber: null,
         posts: [],
         currentPost: null,
         playIndex: -1,
@@ -19,12 +20,30 @@ const vue = new Vue({
         mode: 'list'
     },
     mounted() {
-        this.getPosts(1);
+        this.getInitPageNumber();
+    },
+    watch: {
+        currentPageNumber: function(val){
+            this.getPosts(val);
+        }
+    },
+    computed: {
+        hasPrevPage: function(){
+            return this.currentPageNumber < this.initPageNumber;
+        },
+        hasNextPage: function() {
+            return this.currentPageNumber > 1;
+        },
     },
     methods: {
-        getPosts(page) {
+        getInitPageNumber(){
+            axios.get('/data/totalNumber').then(resp => {
+                this.initPageNumber = this.currentPageNumber = Math.ceil(resp.data / 10);
+            });
+        },
+        getPosts(pageNumber) {
             axios
-            .get(`/data/${page}.json`)
+            .get(`/data/${pageNumber}.json`)
             .then(resp => this.posts = parse(resp.data));
         },
         showPost(index) {
@@ -96,6 +115,12 @@ const vue = new Vue({
         pauseSentence() {
             this.paused = true
             speaker.cancel();
+        },
+        goToPrevPage(){
+            if (this.hasPrevPage) this.currentPageNumber++
+        },
+        goToNextPage(){
+            if(this.hasNextPage) this.currentPageNumber--
         }
     }
 });

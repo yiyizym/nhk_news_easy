@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { _axios } from './_axios';
+import axios from './_axios';
 import { parse } from './parser'
 import { build } from './builder'
 import speaker from './speaker'
@@ -23,9 +23,9 @@ const vue = new Vue({
     },
     methods: {
         getPosts(page) {
-            _axios
+            axios
             .get(`/data/${page}.json`)
-            .then(resp => this.posts = parse(resp));
+            .then(resp => this.posts = parse(resp.data));
         },
         showPost(index) {
             this.currentPost = this.posts[index];

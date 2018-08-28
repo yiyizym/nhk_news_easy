@@ -7,6 +7,4 @@ const _axios = axios.create({
     },
 });
 
-module.exports = {
-    _axios
-}
+export default _axios;

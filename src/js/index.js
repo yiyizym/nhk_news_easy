@@ -4,7 +4,9 @@ import { parse } from './parser'
 import { build } from './builder'
 import speaker from './speaker'
 
-import '../scss/index.scss'
+import '../scss/index.scss';
+
+
 
 const vue = new Vue({
     el: '#app',
@@ -20,6 +22,7 @@ const vue = new Vue({
         mode: 'list'
     },
     mounted() {
+        this.setBaseUrl();
         this.getInitPageNumber();
     },
     watch: {
@@ -36,14 +39,17 @@ const vue = new Vue({
         },
     },
     methods: {
+        setBaseUrl(){
+            this.baseUrl = window.location.href;
+        },
         getInitPageNumber(){
-            axios.get('/data/totalNumber').then(resp => {
+            axios.get(`${this.baseUrl}/data/totalNumber`).then(resp => {
                 this.initPageNumber = this.currentPageNumber = Math.ceil(resp.data / 10);
             });
         },
         getPosts(pageNumber) {
             axios
-            .get(`/data/${pageNumber}.json`)
+            .get(`${this.baseUrl}/data/${pageNumber}.json`)
             .then(resp => this.posts = parse(resp.data));
         },
         showPost(index) {

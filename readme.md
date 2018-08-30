@@ -4,8 +4,9 @@
 
 `nhk_news_easy` 的目的是方便学习日语的朋友练习听力，请不要用于商业牟利。
 
-**license**
+**license:**
+
 BSD
 
-**TODO**
+**TODO:**
 - 增加名词注释

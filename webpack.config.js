@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const webpack = require('webpack')
 
+const { GenerateSW } = require('workbox-webpack-plugin')
+
 module.exports = {
     mode: process.env.WEBPACK_MODE || 'development',
     // mode: 'development',
@@ -37,6 +39,22 @@ module.exports = {
         template: 'src/tpl/index.html'
       }),
       new CleanWebpackPlugin(['docs'],{exclude:['data']}),
-      new webpack.HotModuleReplacementPlugin()
+      new webpack.HotModuleReplacementPlugin(),
+      new GenerateSW({
+        runtimeCaching: [{
+          urlPattern: /data\/\d+\.json/,
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'cache-data',
+            expiration: {
+              maxEntries: 5,
+              maxAgeSeconds: 60 * 60 * 24 * 7,
+            },
+          }
+        },{
+          urlPattern: /\.(?:js|css)$/,
+          handler: 'staleWhileRevalidate',
+        }]
+      })
     ]
 };

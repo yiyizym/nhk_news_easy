@@ -11,8 +11,8 @@ module.exports = {
     entry: './src/js/index.js',
     resolve: {
         alias: {
-            // vue: 'vue/dist/vue.min.js'
-            vue: 'vue/dist/vue.js'
+            vue: 'vue/dist/vue.min.js'
+            // vue: 'vue/dist/vue.js'
         }
     },
     devServer: {
@@ -31,16 +31,17 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'docs'),
-        filename: '[hash].bundle.js'
+        filename: 'bundle.js'
     },
     plugins: [
       new HtmlWebpackPlugin({
         title: 'nhk_news_easy',
         template: 'src/tpl/index.html'
       }),
-      new CleanWebpackPlugin(['docs'],{exclude:['data']}),
+      new CleanWebpackPlugin(['docs'],{exclude:['data','workbox-v3.4.1']}),
       new webpack.HotModuleReplacementPlugin(),
       new GenerateSW({
+        importWorkboxFrom: 'local',
         runtimeCaching: [{
           urlPattern: /data\/\d+\.json/,
           handler: 'cacheFirst',

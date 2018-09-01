@@ -43,13 +43,13 @@ const vue = new Vue({
             this.baseUrl = window.location.href;
         },
         getInitPageNumber(){
-            axios.get(`${this.baseUrl}/data/totalNumber`).then(resp => {
+            axios.get(`${this.baseUrl}data/totalNumber`).then(resp => {
                 this.initPageNumber = this.currentPageNumber = Math.ceil(resp.data / 10);
             });
         },
         getPosts(pageNumber) {
             axios
-            .get(`${this.baseUrl}/data/${pageNumber}.json`)
+            .get(`${this.baseUrl}data/${pageNumber}.json`)
             .then(resp => this.posts = parse(resp.data));
         },
         showPost(index) {

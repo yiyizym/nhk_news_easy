@@ -20,8 +20,8 @@ class SpiderMan(object):
                 html = self.downloader.download(new_url)
                 data = self.parser.parser(new_url, html)
                 self.output.store_data(data)
-            except Exception, e:
-                print "crawl failed"
+            except Exception as e:
+                print("crawl failed %s" % e)
         self.output.output()
 if __name__ == '__main__':
     spider_man = SpiderMan()

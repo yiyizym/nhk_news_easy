@@ -21,6 +21,10 @@
         <div class="list-header">文章列表</div>
         <div class="list-content">
             <div class="title" title="click to listen this post" v-for="(post, index) in posts" @click="showPost(index)">{{post.title.text}}</div>
+            <div class="pages">
+                <button class="prev" v-if="hasPrevPage" @click="goToPrevPage">上一页</button>
+                <button class="next" v-if="hasNextPage" @click="goToNextPage">下一页</button>
+            </div>
         </div>
     </div>
     <div class="post" v-else>

@@ -4,13 +4,16 @@ import { parse } from './parser'
 import { build } from './builder'
 import speaker from './speaker'
 
-import '../scss/index.scss'
+import '../scss/index.scss';
+
+
 
 const vue = new Vue({
     el: '#app',
     template: '#template',
     data: {
-        // posts: parse(posts),
+        initPageNumber: null,
+        currentPageNumber: null,
         posts: [],
         currentPost: null,
         playIndex: -1,
@@ -19,12 +22,34 @@ const vue = new Vue({
         mode: 'list'
     },
     mounted() {
-        this.getPosts(1);
+        this.setBaseUrl();
+        this.getInitPageNumber();
+    },
+    watch: {
+        currentPageNumber: function(val){
+            this.getPosts(val);
+        }
+    },
+    computed: {
+        hasPrevPage: function(){
+            return this.currentPageNumber < this.initPageNumber;
+        },
+        hasNextPage: function() {
+            return this.currentPageNumber > 1;
+        },
     },
     methods: {
-        getPosts(page) {
+        setBaseUrl(){
+            this.baseUrl = window.location.href;
+        },
+        getInitPageNumber(){
+            axios.get(`${this.baseUrl}/data/totalNumber`).then(resp => {
+                this.initPageNumber = this.currentPageNumber = Math.ceil(resp.data / 10);
+            });
+        },
+        getPosts(pageNumber) {
             axios
-            .get(`/data/${page}.json`)
+            .get(`${this.baseUrl}/data/${pageNumber}.json`)
             .then(resp => this.posts = parse(resp.data));
         },
         showPost(index) {
@@ -96,6 +121,12 @@ const vue = new Vue({
         pauseSentence() {
             this.paused = true
             speaker.cancel();
+        },
+        goToPrevPage(){
+            if (this.hasPrevPage) this.currentPageNumber++
+        },
+        goToNextPage(){
+            if(this.hasNextPage) this.currentPageNumber--
         }
     }
 });

@@ -1,6 +1,5 @@
 import re
-import simplejson 
-import urlparse
+import simplejson
 from bs4 import BeautifulSoup
 
 class HtmlParser(object):
@@ -13,9 +12,9 @@ class HtmlParser(object):
     def _get_new_data(self, page_url, soup):
         data = {}
         data['url'] = page_url
-        data['title'] = soup.find('h1', class_='article-main__title').decode_contents().replace('\n', '')
+        data['title'] = str(soup.find('h1', class_='article-main__title')).replace('\n', '')
         data['date'] = soup.find('p', class_='article-main__date').get_text()
-        data['article'] = soup.find('div', class_='article-main__body').decode_contents().replace('\n', '')
+        data['article'] = str(soup.find('div', class_='article-main__body')).replace('\n', '')
         return data
     def paer_url(self, page_url, response):
         pattern = re.compile(r'')
@@ -34,6 +33,6 @@ class HtmlParser(object):
                     url = 'https://www3.nhk.or.jp/news/easy/' + id + '/' + id + '.html'
                     urls.add(url)
                 return urls
-            except Exception,e:
-                print e
+            except Exception as e:
+                print(e)
                 return []

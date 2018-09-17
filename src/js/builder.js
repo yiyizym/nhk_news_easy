@@ -10,6 +10,9 @@ const build = function(obj){
           case 'img':
             //do nothing
             break;
+          case 'span':
+            htmlStr += handleSpanTag(tag);
+            break;
           default:
             htmlStr += `<span>${tag.children.slice(0).map(handleTag).join('')}</span>`;
             break;
@@ -32,8 +35,11 @@ const handleTag = function(tag) {
         case 'ruby':
           return handleRubyTag(tag);
         case 'img':
-            //do nothing
-            break;
+          //do nothing
+          break;
+        case 'span':
+          return handleSpanTag(tag);
+          break;
         default:
           return `<span>${tag.children.slice(0).map(handleTag).join('')}</span>`;
       }
@@ -46,6 +52,17 @@ const handleTag = function(tag) {
 
 const handleRubyTag = function(obj){
   return `<ruby>${handleTag(obj.children[0])}<rt>${obj.children[1].children[0].data}</rt></ruby>`;
+}
+
+const clazzMap = {
+  colorC: 'blue',
+  colorN: 'green',
+  colorL: 'orange'
+}
+
+const handleSpanTag = function(obj){
+  let clazz = obj.attribs ? obj.attribs.class : '';
+  return `<span class="${clazzMap[clazz]}">${obj.children.slice(0).map(handleTag).join('')}</span>`;;
 }
 
 module.exports = {

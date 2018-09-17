@@ -1,108 +1,138 @@
 body {
-    margin: 0;
+  margin: 0;
 }
 
 button {
-    border: transparent;
-    padding: 5px;
-    border-radius: 3px;
-    cursor: pointer;
-    &:hover {
-        background-image: linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1));
-    }
+  border: transparent;
+  padding: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+  &:hover {
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+  }
 }
 
 .list-header {
-    height: 40px;
-    line-height: 40px;
-    padding-left: 20px;
-    font-size: 20px;
-    font-weight: bolder;
-    border-bottom: 1px solid #ddd;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: bolder;
+  border-bottom: 1px solid #ddd;
 }
 
 .list-content {
-    width: 80vw;
-    margin: 40px auto;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-
-    .title {
-        box-sizing: border-box;
-        height: 45px;
-        line-height: 25px;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        cursor: pointer;
-        &:last-child{
-            border-bottom: none;
-        }
+  width: 80vw;
+  margin: 40px auto;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  .title {
+    box-sizing: border-box;
+    height: 45px;
+    line-height: 25px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    &:last-child {
+      border-bottom: none;
     }
-
-    .pages {
-        height: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 20px;
-        .prev,
-        .next {
-            margin: 0 10px;
-        }
+  }
+  .pages {
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    .prev,
+    .next {
+      margin: 0 10px;
     }
+  }
 }
 
 .post-header {
-    height: 40px;
-    line-height: 40px;
-    padding-left: 20px;
-    font-size: 20px;
-    // font-weight: bolder;
-    border-bottom: 1px solid #ddd;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  font-size: 20px; // font-weight: bolder;
+  border-bottom: 1px solid #ddd;
 }
 
 .post-content {
-    width: 80vw;
-    margin: 40px auto;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-
-    p {
-        box-sizing: border-box;
-        height: 65px;
-        line-height: 45px;
-        margin: 0;
-        padding: 15px;
-        border-bottom: 1px solid #ddd;
-        cursor: pointer;
-        &:last-child{
-            border-bottom: none;
-        }
-        &.active {
-            color: rgb(32, 94, 192);
-        }
+  width: 80vw;
+  margin: 40px auto;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  p {
+    box-sizing: border-box;
+    height: 65px;
+    line-height: 45px;
+    margin: 0;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    &:last-child {
+      border-bottom: none;
     }
-
-    .post-title {
-        text-align: center;
-        line-height: 45px;
-        font-size: 22px;
-        font-weight: bold;
-        cursor: default;
+    &.active {
+      color: rgb(32, 94, 192);
     }
+  }
+  .post-title {
+    text-align: center;
+    line-height: 45px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: default;
+  }
+  span.blue {
+    color: blue;
+  }
+  span.green {
+    color: green;
+  }
+  span.orange {
+    color: orange;
+  }
 }
 
 .content>p {
-    color: aliceblue;
-    &:hover {
-        background: rgb(224, 224, 222);
-    }
-    &.active {
-        color: rgb(21, 20, 17);
-    }
+  color: aliceblue;
+  &:hover {
+    background: rgb(224, 224, 222);
+  }
+  &.active {
+    color: rgb(21, 20, 17);
+  }
 }
 
 .content>p,
 .btns>button {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.post-footer {
+  width: 80vw;
+  margin: 40px auto;
+  display: flex;
+  &>div {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+  }
+  span.plette {
+    display: inline-block;
+    height: 30px;
+    width: 80px;
+    margin-right: 10px;
+  }
+  .green {
+    background-color: green;
+  }
+  .orange {
+    background-color: orange;
+  }
+  .blue {
+    background-color: blue;
+  }
 }

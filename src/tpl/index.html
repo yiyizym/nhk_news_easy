@@ -38,6 +38,11 @@
             <p title="post's title" class="post-title">{{currentPost.title.text}}</p>
             <p title="click to listen this sentence" v-for="(sentence, index) in currentPost.article" :key="index" :class="[isSpeaking(index) ? 'active' : '', 'post-sentence']" @click="play(index)" v-html="buildSentence(sentence)"></p>
         </div>
+        <div class="post-footer">
+          <div><span class="plette green"></span>人名</div>
+          <div><span class="plette orange"></span>地名</div>
+          <div><span class="plette blue"></span>公司/组织名</div>
+        </div>
     </div>
     </script>
     <script>
